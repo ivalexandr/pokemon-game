@@ -1,33 +1,31 @@
-import { useState } from 'react'
 import cn from 'classnames'
 import s from './style.module.css'
 
-const Menu = () => {
-  const [isActive, setActive] = useState(false)
+const Menu = ({ type }) => {
 
   return (
-    <div className={cn(s.menuContainer, {[s.active]: isActive})}>
-      <div className={s.overlay} />
+    <div className={cn(s.menuContainer, s[type] )}>
+      <div className={s.overlay} /> 
         <div className={s.menuItems}>
           <ul>
             <li>
               <a href="#welcome">
-              HOME
+                HOME
               </a>
             </li>
             <li>
               <a href="#game">
-              GAME
+                GAME
               </a>
             </li>
             <li>
               <a href="#about">
-              ABOUT
+                ABOUT
               </a>
             </li>
             <li>
               <a href="#contact">
-              CONTACT
+                CONTACT
               </a>
             </li>
           </ul>

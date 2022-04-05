@@ -2,6 +2,7 @@ import { Header } from '../../components/Header'
 import { Layout } from '../../components/Layout'
 import { Footer } from '../../components/Footer'
 import { PokemonCard } from '../../components/PokemonCard'
+import { MenuHeader } from '../../components/MenuHeader'
 import { pokemonDB } from '../../database/db'
 import bg from '../../assets/img/bg.jpg'
 
@@ -15,6 +16,7 @@ const HomePage = ({ onClickHandler }) => {
 
   return (
     <>
+      <MenuHeader />
       <Header title='This is title' descr='This is Description!' onClickHandler={clickHandler}/>
       <Layout title='This is title layout 1' urlBg={bg}>
         <p>
