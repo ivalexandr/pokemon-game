@@ -1,27 +1,35 @@
 import cn from 'classnames'
 import s from './style.module.css'
 
-const Menu = ({ type }) => {
+const Menu = ({ isActive, onClickHandler }) => {
+
+  const clickHandler = event => {
+    onClickHandler && onClickHandler(event)
+  }
+
   const MENU = [
     {
       title:'HOME',
-      to: '#welcome'
+      to: '/'
     },
     {
       title:'GAME',
-      to: '#game'
+      to: '/game'
     },
     {
       title:'ABOUT',
-      to: '#about'
+      to: '/about'
     },
     {
       title:'CONTACT',
-      to: '#contact'
+      to: '/contact'
     },
   ]
   return (
-    <div className={cn(s.menuContainer, s[type] )}>
+    <div className={cn(s.menuContainer, {
+      [s.active]: isActive === true,
+      [s.deactive]: isActive === false
+    } )}>
       <div className={s.overlay} /> 
         <div className={s.menuItems}>
           <ul>
@@ -29,7 +37,7 @@ const Menu = ({ type }) => {
               MENU.map(({ title, to }) => {
                 return (
                   <li key={to}>
-                    <a href={to}>
+                    <a href={to} onClick={clickHandler} data-menu>
                       {title}
                     </a>
                   </li>

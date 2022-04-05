@@ -1,21 +1,25 @@
 import { useState } from "react"
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Menu } from "../Menu"
 import { NavBar } from "../NavBar"
 
-const MenuHeader = ({ bgActive }) => {
-  const [isActive, setActive] = useState(false)
-  const [type, setType] = useState()
+const MenuHeader = () => {
+  const [isActive, setActive] = useState()
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const clickHandler = event => {
     event.preventDefault()
     setActive(prev => !prev)
-    setType(isActive ? 'deactive' : 'active')
+    if (event.target.dataset.menu) {
+      navigate(event.target.getAttribute('href'))
+    }
   }
 
   return (
     <>
-      <Menu type={type}/>
-      <NavBar onClickHandler={clickHandler} isActive={isActive} bgActive={bgActive}/>
+      <NavBar onClickHandler={clickHandler} isActive={isActive} bgActive={!(location.pathname === '/')} />
+      <Menu isActive={isActive} onClickHandler = {clickHandler} />
     </>
   )
 }
