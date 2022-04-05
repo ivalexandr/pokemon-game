@@ -17,7 +17,7 @@ const HomePage = ({ onClickHandler }) => {
   return (
     <>
       <MenuHeader />
-      <Header title='This is title' descr='This is Description!' onClickHandler={clickHandler}/>
+      <Header title='Pokemon Game' descr='This is Description!' onClickHandler={clickHandler}/>
       <Layout title='This is title layout 1' urlBg={bg}>
         <p>
           In the game two players face off against one another, one side playing
