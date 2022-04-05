@@ -1,9 +1,11 @@
+import { useNavigate } from 'react-router-dom'
 import s from './style.module.css'
 
-const Header = ({title, descr, onClickHandler}) => {
+const Header = ({title, descr }) => {
+  const navigate = useNavigate();
 
   const clickHandler = () => {
-    onClickHandler && onClickHandler('game')
+    navigate('/game')
   }
 
   return (
