@@ -1,25 +1,25 @@
-import { useState } from "react"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { LayoutPage } from "../LayoutPage"
 import { HomePage } from "../../routes/HomePage"
 import { GamePage } from '../../routes/GamePage'
+import { AboutPage } from "../../routes/AboutPage"
+import { ContactPage } from '../../routes/ContactPage'
+import { Page404 } from "../../routes/404"
 
 const App = () => {
-  const [page, setPage] = useState('home')
-
-  const clickHandler = pageName => {
-    setPage(pageName)
-  }
-
-  switch(page) {
-    case 'home': {
-      return <HomePage onClickHandler = {clickHandler} />
-    }
-    case 'game': {
-      return <GamePage onClickHandler={clickHandler}/>
-    }
-    default: {
-      return <GamePage onClickHandler = {clickHandler} />
-    }
-  }
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<LayoutPage />}>
+          <Route path="/" element={<HomePage />}/>
+          <Route path="game" element={<GamePage />} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="contact" element={<ContactPage />} />
+        </Route>
+        <Route path="*" element={<Page404 />} />
+      </Routes>
+    </Router>
+  )
 }
 
 export default App

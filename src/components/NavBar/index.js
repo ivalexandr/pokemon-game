@@ -1,10 +1,10 @@
 import cn from 'classnames'
 import s from './style.module.css'
 
-const NavBar = ({isActive, onClickHandler}) => {
+const NavBar = ({isActive, onClickHandler, bgActive = true}) => {
 
   return (
-    <nav className={s.root}>
+    <nav className={cn(s.root, {[s.bgActive]: bgActive})}>
       <div className={s.navWrapper}>
         <p className={s.brand}>
           LOGO
