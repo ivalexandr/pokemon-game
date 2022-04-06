@@ -1,10 +1,10 @@
 import { useState,useEffect } from 'react'
-import { getDataFromDatabase, updateDataFromDatabase, pushDataFromDatabase } from '../../api/api'
-import { Layout } from '../../components/Layout'
-import { PokemonCard } from '../../components/PokemonCard'
+import { getDataFromDatabase, updateDataFromDatabase, pushDataFromDatabase } from '../../../api/api'
+import { Layout } from '../../../components/Layout'
+import { PokemonCard } from '../../../components/PokemonCard'
 import s from './style.module.css'
 
-const GamePage = () => {
+const Start = () => {
   const [pokemons, setPokemons] = useState({})
 
   useEffect(() => {
@@ -88,4 +88,4 @@ const GamePage = () => {
   )
 }
 
-export { GamePage }
+export { Start }

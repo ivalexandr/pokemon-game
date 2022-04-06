@@ -78,7 +78,7 @@ align-items: center;
   }
   .wrap.back {
   z-index: -1;
-  background-image: url(./assets/card-back-side.jpg);
+  background-image: url(../../assets/img/cardbackside.jpg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
