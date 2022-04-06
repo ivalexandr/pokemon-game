@@ -1,13 +1,14 @@
-import cardBack from '../../assets/img/cardbackside.jpg'
 import cn from 'classnames'
 import s from './style.module.css'
 
-const PokemonCard = ({ name, img, id, type, values, isActive, onClickHandler, minimize, className }) => {
-  
-  const clickHandler = () => onClickHandler && onClickHandler(id)
+const PokemonCard = ({ name, img, id, type, values, isActive, minimize, className, onCLickHandler, isSelected }) => {
+
+  const clickHandler = () => {
+    onCLickHandler && onCLickHandler(id)
+  }
 
   return (
-      <div className={cn(className, s.pokemonCard, {[s.active]: isActive})}>
+      <div className={cn(className, s.pokemonCard, {[s.active]: isActive, [s.selected]: isSelected})} onClick = {clickHandler}>
         <div className={s.cardFront}>
           <div className={cn(s.wrap, s.front)}>
             <div className={cn(s.pokemon, s[type])}>
@@ -35,9 +36,7 @@ const PokemonCard = ({ name, img, id, type, values, isActive, onClickHandler, mi
           </div>
         </div>
         <div className={s.cardBack}>
-          <div className={cn(s.wrap, s.back)}>
-            <img src={cardBack} alt='Сard Backed' />
-          </div>
+          <div className={cn(s.wrap, s.back)} />
         </div>
       </div>
   )

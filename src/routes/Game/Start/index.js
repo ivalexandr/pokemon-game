@@ -1,11 +1,15 @@
-import { useState,useEffect } from 'react'
-import { getDataFromDatabase, updateDataFromDatabase, pushDataFromDatabase } from '../../../api/api'
+import { useState, useEffect, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { StartContext } from '../../../context/Start'
+import { getDataFromDatabase } from '../../../api/api'
 import { Layout } from '../../../components/Layout'
 import { PokemonCard } from '../../../components/PokemonCard'
 import s from './style.module.css'
 
 const Start = () => {
-  const [pokemons, setPokemons] = useState({})
+  const [ pokemons, setPokemons ] = useState({})
+  const { addPokemons } = useContext(StartContext)
+  const navigate = useNavigate()
 
   useEffect(() => {
     getDataFromDatabase()
@@ -18,73 +22,47 @@ const Start = () => {
       return Object.entries(prev).reduce((acc, item) => {
         const pokemon = {...item[1]}
         if (pokemon.id === id) {
-          pokemon.active = !pokemon.active
-          updateDataFromDatabase(pokemon, item[0])
+          pokemon.isSelected = true
         }
         acc[item[0]] = pokemon
         return acc
       }, {})
     })
+    addPokemons(
+      Object.values(pokemons).filter(item => item.id === id)[0]
+    )
   }
 
-  const clickAddHandler = async () => {
-    const pokemon =  {
-      "abilities": [
-        "keen-eye",
-        "tangled-feet",
-        "big-pecks"
-      ],
-      "base_experience": 122,
-      "height": 11,
-      "weight": 300,
-      "id": 17,
-      "img": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/17.png",
-      "name": "pidgeotto",
-      "stats": {
-        "hp": 63,
-        "attack": 60,
-        "defense": 55,
-        "special-attack": 50,
-        "special-defense": 50,
-        "speed": 71
-      },
-      "type": "normal",
-      "values": {
-        "top": 7,
-        "right": 5,
-        "bottom": 1,
-        "left": 2
-      }
-    }
-    await pushDataFromDatabase(pokemon)
-    await getDataFromDatabase()
-    .then(data => setPokemons(data))
-    .catch(error => {throw new Error(error)})
+  const clickStartHandler = () => {
+    navigate('board/')
   }
-
+  
   return (
-      <Layout
-        title="Pokemon's game!"
-        colorBg="#e2e2e2"
-      >
-        <button onClick={clickAddHandler}>Added pokemon</button>
+    <Layout title="Pokemon's game">
         <div className={s.flex}>
           {
             Object.entries(pokemons).map(item => {
-              return <PokemonCard 
-                key={item[0]}
-                name={item[1].name}
-                img={item[1].img}
-                id={item[1].id}
-                values={item[1].values}
-                type={item[1].type}
-                onClickHandler={clickHandler}
-                isActive={item[1].active}
-              />
+              return (
+              <div className={s.flexItem} key={item[0]}>
+                  <PokemonCard 
+                    name={item[1].name}
+                    img={item[1].img}
+                    id={item[1].id}
+                    values={item[1].values}
+                    type={item[1].type}
+                    isActive={true}
+                    onCLickHandler = {clickHandler}
+                    isSelected = {item[1].isSelected}
+                />
+              </div>
+              )
             })
           }
         </div>
-      </Layout>
+        <div className={s.button}>
+          <button onClick={clickStartHandler}>Start game</button>
+        </div>
+    </Layout>
   )
 }
 
