@@ -1,10 +1,26 @@
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { getBoard } from '../../../api/api'
 import { PokemonCard } from '../../../components/PokemonCard'
 import { StartContext } from '../../../context/Start'
 import s from './style.module.css'
 
 const BoardPage = () => {
   const { startPokemons } = useContext(StartContext)
+  const [board, setBoard] = useState([])
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (startPokemons.length === 0) {
+      navigate('/game', {replace: true})
+    }
+    const fetchData= async () => {
+      const board = await getBoard()
+      setBoard(board.data)
+    }
+    fetchData()
+  }, [])
+
   return (
     <div className={s.root}>
       <div className={s.playerOne}>
@@ -27,15 +43,11 @@ const BoardPage = () => {
         }
       </div>
       <div className={s.board}>
-        <div className={s.boardPlate}>1</div>
-        <div className={s.boardPlate}>2</div>
-        <div className={s.boardPlate}>3</div>
-        <div className={s.boardPlate}>4</div>
-        <div className={s.boardPlate}>5</div>
-        <div className={s.boardPlate}>6</div>
-        <div className={s.boardPlate}>7</div>
-        <div className={s.boardPlate}>8</div>
-        <div className={s.boardPlate}>9</div>
+        {
+          board.map((_, index) => {
+            return <div key={index} className={s.boardPlate} />
+          })
+        }
       </div>
     </div>
   )

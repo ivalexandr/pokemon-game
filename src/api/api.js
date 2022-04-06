@@ -13,6 +13,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 const database = getDatabase(app)
 
+//---------firebase api---------
+
 const getDataFromDatabase = async () => {
   try {
     const refDb = ref(database)
@@ -41,8 +43,23 @@ const pushDataFromDatabase = async data => {
   }
 }
 
+//-------game api-------
+const BASE_URL = 'https://reactmarathon-api.netlify.app';
+
+const getBoard = async () => {
+  try {
+    const url = new URL('api/board', BASE_URL)
+    const res = await fetch(url)
+    if(!res.ok) throw new Error('Запрос не удался')
+    return await res.json()
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export { 
   getDataFromDatabase,
   updateDataFromDatabase,
-  pushDataFromDatabase
+  pushDataFromDatabase,
+  getBoard
 }
