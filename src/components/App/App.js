@@ -7,6 +7,7 @@ import { ContactPage } from '../../routes/ContactPage'
 import { Page404 } from "../../routes/404"
 
 const App = () => {
+  
   return (
     <Router>
       <Routes>
