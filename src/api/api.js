@@ -57,9 +57,39 @@ const getBoard = async () => {
   }
 }
 
+const getPlayerTwoCard = async () => {
+  try {
+    const url = new URL('api/create-player', BASE_URL)
+    const res = await fetch(url)
+    if(!res.ok) throw new Error('Запрос не удался')
+    return await res.json()
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+const setCardOnBoard = async data => {
+  try {
+    const url = new URL('api/players-turn', BASE_URL)
+    const res = await fetch(url, {
+      method:'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    if(!res.ok) throw new Error('Запрос не удался')
+    return await res.json()
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export { 
   getDataFromDatabase,
   updateDataFromDatabase,
   pushDataFromDatabase,
-  getBoard
+  getBoard,
+  getPlayerTwoCard,
+  setCardOnBoard
 }

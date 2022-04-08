@@ -8,9 +8,8 @@ import s from './style.module.css'
 
 const Start = () => {
   const [ pokemons, setPokemons ] = useState({})
-  const { addPokemons } = useContext(StartContext)
+  const startPokemons = useContext(StartContext)
   const navigate = useNavigate()
-
   useEffect(() => {
     getDataFromDatabase()
     .then(data => setPokemons(data))
@@ -28,7 +27,7 @@ const Start = () => {
         return acc
       }, {})
     })
-    addPokemons(
+    startPokemons.addPlayer1Pokemons(
       Object.values(pokemons).filter(item => item.id === id)[0]
     )
   }

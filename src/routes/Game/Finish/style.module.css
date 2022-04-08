@@ -1,0 +1,20 @@
+.player {
+  display: flex;
+  height: 340px;
+  justify-content: space-between;
+}
+
+.player:first-child {
+  margin-bottom: 50px;
+}
+
+.player:last-child {
+  margin-top: 50px;
+}
+
+.wrapperCard {
+  width: 250px;
+}
+.wrapperButton {
+  text-align: center;
+}
