@@ -57,6 +57,7 @@ const BoardPage = () => {
       setBoard([])
       setTwoPlayerCards([])
     }
+  //eslint-disable-next-line
   }, [])
 
   useEffect(() => {
@@ -71,6 +72,7 @@ const BoardPage = () => {
       }
       navigate('../finish/')
     }
+  //eslint-disable-next-line
   }, [steps])
 
   const clickBoardHandler = async position => {

@@ -8,31 +8,32 @@ import s from './style.module.css'
 
 const Start = () => {
   const [ pokemons, setPokemons ] = useState({})
+  const [ choisePokemons, setChoisePokemons ] = useState([])
   const startPokemons = useContext(StartContext)
+
   const navigate = useNavigate()
+
   useEffect(() => {
     getDataFromDatabase()
     .then(data => setPokemons(data))
     .catch(error => {throw new Error(error)})
+    return () => setChoisePokemons([])
   }, [])
 
   const clickHandler = id => {
-    setPokemons(prev => {
-      return Object.entries(prev).reduce((acc, item) => {
-        const pokemon = {...item[1]}
-        if (pokemon.id === id) {
-          pokemon.isSelected = true
-        }
-        acc[item[0]] = pokemon
-        return acc
-      }, {})
-    })
-    startPokemons.addPlayer1Pokemons(
-      Object.values(pokemons).filter(item => item.id === id)[0]
-    )
+    const pokemon = Object.entries(pokemons).find(item => item[1].id === id)
+    if (pokemon[1].isSelected) {
+      pokemon[1].isSelected = false
+    } else {
+      pokemon[1].isSelected = true
+    }
+    setPokemons(prev => ({...prev, [pokemon[0]]: {...pokemon[1]}}))
+    const choisePokemon = Object.values(pokemons).filter(item => item.isSelected)
+    setChoisePokemons(choisePokemon);
   }
 
   const clickStartHandler = () => {
+    startPokemons.addPlayer1Pokemons(choisePokemons)
     navigate('board/')
   }
   
@@ -59,7 +60,11 @@ const Start = () => {
           }
         </div>
         <div className={s.button}>
-          <button onClick={clickStartHandler}>Start game</button>
+          <button 
+            disabled={choisePokemons.length < 5 || choisePokemons.length > 5} 
+            onClick={clickStartHandler}>
+              Start game
+            </button>
         </div>
     </Layout>
   )
