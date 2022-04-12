@@ -76,6 +76,8 @@ const BoardPage = () => {
   }, [gameSteps])
 
   const clickBoardHandler = position => {
+    const cardOnBoard = gameBoard.find(item => item.position === position)
+    if (cardOnBoard.card) return
     if (selectedGameCard) {
       const params = {
         position,
