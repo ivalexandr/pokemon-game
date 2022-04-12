@@ -16,6 +16,11 @@ const MenuHeader = () => {
     }
   }
 
+  if (location.pathname === '/game/board/' 
+  || location.pathname === '/game/finish/') {
+    return null
+  }
+
   return (
     <>
       <NavBar onClickHandler={clickHandler} isActive={isActive} bgActive={!(location.pathname === '/')} />
