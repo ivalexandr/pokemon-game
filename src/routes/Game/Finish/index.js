@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Layout } from "../../../components/Layout"
 import { PokemonCard } from "../../../components/PokemonCard"
-import { pushCard } from '../../../redux/reducers/async/pushCard'
+import { pushCard } from '../../../redux/reducers/gameReducer/async/pushCard'
 import { 
   player1PokemonsGame,
   player2PokemonsGame,
@@ -11,7 +11,7 @@ import {
   result,
   setWinCard,
   choiseWinCard
-  } from '../../../redux/reducers/pokemonsReducer'
+  } from '../../../redux/reducers/gameReducer'
 import s from './style.module.css'
 
 const FinishPage = () => {

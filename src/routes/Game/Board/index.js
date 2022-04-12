@@ -2,9 +2,9 @@ import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-import { getPlayer2 } from '../../../redux/reducers/async/getPlayer2Pokemons'
-import { getGameBoard } from '../../../redux/reducers/async/getBoard'
-import { setCardOnGameBoard } from '../../../redux/reducers/async/setCardOnGameBoard'
+import { getPlayer2 } from '../../../redux/reducers/gameReducer/async/getPlayer2Pokemons'
+import { getGameBoard } from '../../../redux/reducers/gameReducer/async/getBoard'
+import { setCardOnGameBoard } from '../../../redux/reducers/gameReducer/async/setCardOnGameBoard'
 
 import {
   player1Pokemons,
@@ -20,7 +20,8 @@ import {
   counterWin,
   counterPlayer1,
   counterPlayer2
-  } from '../../../redux/reducers/pokemonsReducer'
+  } from '../../../redux/reducers/gameReducer'
+  
 import { PokemonCard } from '../../../components/PokemonCard'
 import { BoardCard } from './components/BoardCard'
 import { ArrowChoice } from '../../../components/ArrowChoice'

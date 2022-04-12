@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { Layout } from '../../../components/Layout'
 import { PokemonCard } from '../../../components/PokemonCard'
 import { useDispatch, useSelector } from 'react-redux'
-import { getPokemons } from '../../../redux/reducers/async/getPokemons'
-import { pokemons, setCard, choiseCard, player1Pokemons } from '../../../redux/reducers/pokemonsReducer'
+import { getPokemons } from '../../../redux/reducers/gameReducer/async/getPokemons'
+import { pokemons, setCard, choiseCard, player1Pokemons } from '../../../redux/reducers/gameReducer'
 import s from './style.module.css'
 
 const Start = () => {

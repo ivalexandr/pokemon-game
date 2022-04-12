@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { setCardOnBoard } from '../../../api/api'
+import { setCardOnBoard } from '../../../../api/api'
 
 export const setCardOnGameBoard = createAsyncThunk(
-  'POKEMONS/setCardOnGameBoard',
+  'game/setCardOnGameBoard',
   async params => await setCardOnBoard(params)
 )

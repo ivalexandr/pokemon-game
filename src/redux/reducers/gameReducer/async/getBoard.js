@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { getBoard } from "../../../api/api"
+import { getBoard } from "../../../../api/api"
 
 export const getGameBoard = createAsyncThunk(
-  'POKEMONS/getGameBoard',
+  'game/getGameBoard',
   async () => await getBoard()
 )

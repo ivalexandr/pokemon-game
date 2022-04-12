@@ -5,8 +5,8 @@ import { getGameBoard } from "./async/getBoard"
 import { setCardOnGameBoard } from "./async/setCardOnGameBoard"
 import { pushCard } from "./async/pushCard"
 
-const pokemonSlice = createSlice({
-  name:'POKEMONS',
+const gameSlice = createSlice({
+  name:'game',
   initialState: {
     pokemons: [],
     player1Pokemons:[],
@@ -181,7 +181,7 @@ const pokemonSlice = createSlice({
   }
 })
 
-export const pokemonReducer = pokemonSlice.reducer
+export const gameReducer = gameSlice.reducer
 export const { 
   setCard,
   choiseCard,
@@ -192,18 +192,18 @@ export const {
   setPlayerStart,
   selectCard,
   counterWin
-} = pokemonSlice.actions
+} = gameSlice.actions
 
-export const pokemons = store => store.POKEMONS.pokemons
-export const player1Pokemons = store => store.POKEMONS.player1Pokemons
-export const player2Pokemons = store => store.POKEMONS.player2Pokemons
-export const result = store => store.POKEMONS.win
-export const board = store => store.POKEMONS.board
-export const choiseWinCard = store => store.POKEMONS.choiseCard
-export const playerStart = store => store.POKEMONS.playerStart
-export const selectedCard = store => store.POKEMONS.selectedCard
-export const steps = store => store.POKEMONS.steps
-export const counterPlayer1 = store => store.POKEMONS.countPlayer1
-export const counterPlayer2 = store => store.POKEMONS.countPlayer2
-export const player1PokemonsGame = store => store.POKEMONS.player1PokemonsGame
-export const player2PokemonsGame = store => store.POKEMONS.player2PokemonsGame
+export const pokemons = store => store.game.pokemons
+export const player1Pokemons = store => store.game.player1Pokemons
+export const player2Pokemons = store => store.game.player2Pokemons
+export const result = store => store.game.win
+export const board = store => store.game.board
+export const choiseWinCard = store => store.game.choiseCard
+export const playerStart = store => store.game.playerStart
+export const selectedCard = store => store.game.selectedCard
+export const steps = store => store.game.steps
+export const counterPlayer1 = store => store.game.countPlayer1
+export const counterPlayer2 = store => store.game.countPlayer2
+export const player1PokemonsGame = store => store.game.player1PokemonsGame
+export const player2PokemonsGame = store => store.game.player2PokemonsGame

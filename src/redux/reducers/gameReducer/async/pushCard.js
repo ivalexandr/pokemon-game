@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import { pushDataFromDatabase } from "../../../api/api"
+import { pushDataFromDatabase } from "../../../../api/api"
 
 export const pushCard = createAsyncThunk(
-  'POKEMONS/pushCard',
+  'game/pushCard',
   async (card) => await pushDataFromDatabase(card) 
 ) 

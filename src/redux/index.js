@@ -1,9 +1,9 @@
-import { combineReducers } from "redux";
-import { configureStore } from "@reduxjs/toolkit";
-import { pokemonReducer } from "./reducers/pokemonsReducer";
+import { combineReducers } from "redux"
+import { configureStore } from "@reduxjs/toolkit"
+import { gameReducer } from "./reducers/gameReducer"
 
 const rootReducer = combineReducers({
-  POKEMONS: pokemonReducer
+  game: gameReducer
 })
 
 export const store = configureStore({
