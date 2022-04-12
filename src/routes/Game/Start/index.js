@@ -1,39 +1,30 @@
-import { useState, useEffect, useContext } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { StartContext } from '../../../context/Start'
-import { getDataFromDatabase } from '../../../api/api'
 import { Layout } from '../../../components/Layout'
 import { PokemonCard } from '../../../components/PokemonCard'
+import { useDispatch, useSelector } from 'react-redux'
+import { getPokemons } from '../../../redux/reducers/async/getPokemons'
+import { pokemons, setCard, choiseCard, player1Pokemons } from '../../../redux/reducers/pokemonsReducer'
 import s from './style.module.css'
 
 const Start = () => {
-  const [ pokemons, setPokemons ] = useState({})
-  const [ choisePokemons, setChoisePokemons ] = useState([])
-  const startPokemons = useContext(StartContext)
-
+  const dispatch = useDispatch()
+  const pokemonsCard = useSelector(pokemons) 
+  const player1 = useSelector(player1Pokemons)
+  
   const navigate = useNavigate()
 
   useEffect(() => {
-    getDataFromDatabase()
-    .then(data => setPokemons(data))
-    .catch(error => {throw new Error(error)})
-    return () => setChoisePokemons([])
+    dispatch(getPokemons())
+  //eslint-disable-next-line
   }, [])
 
   const clickHandler = id => {
-    const pokemon = Object.entries(pokemons).find(item => item[1].id === id)
-    if (pokemon[1].isSelected) {
-      pokemon[1].isSelected = false
-    } else {
-      pokemon[1].isSelected = true
-    }
-    setPokemons(prev => ({...prev, [pokemon[0]]: {...pokemon[1]}}))
-    const choisePokemon = Object.values(pokemons).filter(item => item.isSelected)
-    setChoisePokemons(choisePokemon);
+    dispatch(setCard(id))
+    dispatch(choiseCard())
   }
 
   const clickStartHandler = () => {
-    startPokemons.addPlayer1Pokemons(choisePokemons)
     navigate('board/')
   }
   
@@ -41,7 +32,7 @@ const Start = () => {
     <Layout title="Pokemon's game">
         <div className={s.flex}>
           {
-            Object.entries(pokemons).map(item => {
+            Object.entries(pokemonsCard).map(item => {
               return (
               <div className={s.flexItem} key={item[0]}>
                   <PokemonCard 
@@ -61,7 +52,7 @@ const Start = () => {
         </div>
         <div className={s.button}>
           <button 
-            disabled={choisePokemons.length < 5 || choisePokemons.length > 5} 
+            disabled={player1.length < 5 || player1.length > 5} 
             onClick={clickStartHandler}>
               Start game
             </button>

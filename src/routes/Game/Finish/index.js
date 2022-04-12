@@ -1,57 +1,56 @@
-import { useContext, useEffect, useState } from 'react'
-import { StartContext } from '../../../context/Start'
+import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { pushDataFromDatabase } from '../../../api/api'
 import { Layout } from "../../../components/Layout"
 import { PokemonCard } from "../../../components/PokemonCard"
+import { pushCard } from '../../../redux/reducers/async/pushCard'
+import { 
+  player1PokemonsGame,
+  player2PokemonsGame,
+  cleanState,
+  result,
+  setWinCard,
+  choiseWinCard
+  } from '../../../redux/reducers/pokemonsReducer'
 import s from './style.module.css'
 
-
 const FinishPage = () => {
-  const startPokemons = useContext(StartContext)
-  const [ player2Cards, setPlayaer2Cards ] = useState(startPokemons.player2Pokemons)
-  const [ choiseeCard, setChoiseCard ] = useState(null)
+
+  const player1 = useSelector(player1PokemonsGame)
+  const player2 = useSelector(player2PokemonsGame)
+  const resultGame = useSelector(result)
+  const choiseCard = useSelector(choiseWinCard)
+
+  const dispatch = useDispatch()
+
   const navigate = useNavigate()
 
   useEffect(() => {
-    if(!startPokemons.player1Pokemons.length 
-      || !startPokemons.player2Pokemons.length) {
+    if(!player1.length || !player2.length) {
+      console.log(player1, player2)
       navigate('../../game', {replace: true})
     }
-    return () => {
-      startPokemons.player1Pokemons = []
-      startPokemons.player2Pokemons = []
-      startPokemons.win = ''
-    }
+    return () => dispatch(cleanState())
   // eslint-disable-next-line
   }, [])
 
   const clickHandler = async () => {
-    if (choiseeCard) {
-      await pushDataFromDatabase(choiseeCard)
+    if (choiseCard) {
+      dispatch(pushCard(choiseCard))
     }
     navigate('../../game')
   }
 
   const clickCardHandler = id => {
-    if (startPokemons.win !== 'WIN') return
-    setPlayaer2Cards(prev => {
-      return prev.map(item => {
-        item.selected = false
-        if (item.id === id) {
-          item.selected = true
-          setChoiseCard(item)
-        }
-        return item
-      })
-    }) 
+    if (resultGame !== 'WIN') return
+    dispatch(setWinCard(id))
   }
 
   return (
-    <Layout title={startPokemons.win}>
+    <Layout title={resultGame}>
       <div className={s.player}>
         {
-          startPokemons.player1Pokemons.map(item => {
+          player1.map(item => {
             return (
               <div className={s.wrapperCard} key={item.id}>
                 <PokemonCard 
@@ -68,11 +67,11 @@ const FinishPage = () => {
         }
       </div>
       <div className={s.wrapperButton}>
-        <button onClick={clickHandler} disabled={choiseeCard && startPokemons.win !== 'WIN'} >End game</button>
+        <button onClick={clickHandler} disabled={choiseCard && resultGame !== 'WIN'} >End game</button>
       </div>
       <div className={s.player}>
       {
-          player2Cards.map(item => {
+          player2.map(item => {
             return (
               <div className={s.wrapperCard} key={item.id}>
                 <PokemonCard 
