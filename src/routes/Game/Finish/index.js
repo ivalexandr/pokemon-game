@@ -14,7 +14,8 @@ const FinishPage = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if(!startPokemons.player1Pokemons.length || !startPokemons.player2Pokemons.length) {
+    if(!startPokemons.player1Pokemons.length 
+      || !startPokemons.player2Pokemons.length) {
       navigate('../../game', {replace: true})
     }
     return () => {
@@ -67,7 +68,7 @@ const FinishPage = () => {
         }
       </div>
       <div className={s.wrapperButton}>
-        <button onClick={clickHandler}>End game</button>
+        <button onClick={clickHandler} disabled={choiseeCard && startPokemons.win !== 'WIN'} >End game</button>
       </div>
       <div className={s.player}>
       {
