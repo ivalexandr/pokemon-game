@@ -43,6 +43,40 @@ const pushDataFromDatabase = async data => {
   }
 }
 
+const registerUser = async data => {
+  const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_API_KEY}`
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers:{
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    })
+    if (!res.ok) throw new Error('Ошибка при регистрации')
+    return await res.json()
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+const authUser = async data => {
+  const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_API_KEY}`
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers:{
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    })
+    if (!res.ok) throw new Error('Ошибка при авторизации')
+    return await res.json()
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 //-------game api-------
 
 const getBoard = async () => {
@@ -88,6 +122,8 @@ export {
   getDataFromDatabase,
   updateDataFromDatabase,
   pushDataFromDatabase,
+  registerUser,
+  authUser,
   getBoard,
   getPlayerTwoCard,
   setCardOnBoard
