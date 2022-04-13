@@ -88,6 +88,7 @@
 
 .menuGroup {
   display: flex;
+  align-items: center;
 }
 
 .loginSvg {
