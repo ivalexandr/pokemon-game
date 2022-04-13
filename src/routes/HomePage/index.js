@@ -1,6 +1,7 @@
 import { Header } from '../../components/Header'
 import { Layout } from '../../components/Layout'
 import { Footer } from '../../components/Footer'
+import { Modal } from '../../components/Modal'
 import bg from '../../assets/img/bg.jpg'
 
 const HomePage = () => {
@@ -22,6 +23,7 @@ const HomePage = () => {
         </p>
       </Layout>
       <Footer />
+      <Modal title={'Registration'} />
     </>
   )
 }

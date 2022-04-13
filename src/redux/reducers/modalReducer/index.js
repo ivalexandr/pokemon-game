@@ -20,3 +20,5 @@ export const {
   closeModal,
   openModal
 } = modalSlice.actions
+
+export const isOpen = store => store.modal.isOpen
