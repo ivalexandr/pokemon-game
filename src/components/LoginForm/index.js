@@ -62,6 +62,7 @@ const LoginForm = () => {
         isRequired={true}
         onChangeHandler={changeHandler}
         value={form.password || ''}
+        autoComplete="currentPassword"
       />
       <div className={s.flex}>
         <button>Send</button> 

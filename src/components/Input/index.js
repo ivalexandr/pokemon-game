@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import s from './style.module.css'
 
-const Input = ({ label, type, name, isRequired, value, onChangeHandler }) => {
+const Input = ({ label, type, name, isRequired, value, onChangeHandler, autoComplete }) => {
 
   return (
     <div className={s.root}>
@@ -12,6 +12,7 @@ const Input = ({ label, type, name, isRequired, value, onChangeHandler }) => {
         value={value}
         onChange={onChangeHandler}
         name={name} 
+        autoComplete = {autoComplete}
       />
       <span className={s.highlight} />
       <span className={s.bar} />

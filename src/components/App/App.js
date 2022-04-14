@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { PrivateRoute } from "../PrivateRoute"
 import { LayoutPage } from "../LayoutPage"
 import { HomePage } from "../../routes/HomePage"
 import { AboutPage } from "../../routes/AboutPage"
@@ -18,9 +19,9 @@ const App = () => {
         <Route path="/" element={<LayoutPage />}>
           <Route path="/" element={<HomePage />}/>
           <Route path="game">
-              <Route path="/game" element={<Start />} />
-              <Route path="/game/board" element={<BoardPage />} />
-              <Route path="/game/finish" element={<FinishPage />} />
+              <Route path="/game" element={<><PrivateRoute /><Start /></>} />
+              <Route path="/game/board" element={<><PrivateRoute /><BoardPage /></>} />
+              <Route path="/game/finish" element={<><PrivateRoute /><FinishPage /></>} />
           </Route>
           <Route path="about" element={<AboutPage />} />
           <Route path="contact" element={<ContactPage />} />
