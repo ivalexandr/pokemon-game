@@ -7,10 +7,12 @@ import { Start } from "../../routes/Game/Start"
 import { BoardPage } from "../../routes/Game/Board"
 import { FinishPage } from "../../routes/Game/Finish"
 import { Page404 } from "../../routes/404"
+import { NotificationContainer } from 'react-notifications'
 
 const App = () => {
   
   return (
+    <>
     <Router>
       <Routes>
         <Route path="/" element={<LayoutPage />}>
@@ -26,6 +28,8 @@ const App = () => {
         <Route path="*" element={<Page404 />} />
       </Routes>
     </Router>
+    <NotificationContainer />
+    </>
   )
 }
 

@@ -53,10 +53,10 @@ const registerUser = async data => {
       },
       body: JSON.stringify(data)
     })
-    if (!res.ok) throw new Error('Ошибка при регистрации')
+    if (!res.ok) return Promise.reject('Ошибка при регистрации')
     return await res.json()
   } catch (error) {
-    console.error(error)
+    return Promise.reject('Ошибка при регистрации')
   }
 }
 
@@ -70,10 +70,10 @@ const authUser = async data => {
       },
       body: JSON.stringify(data)
     })
-    if (!res.ok) throw new Error('Ошибка при авторизации')
+    if (!res.ok) return Promise.reject('Ошибка при авторизации')
     return await res.json()
   } catch (error) {
-    console.error(error)
+    return Promise.reject('Ошибка при авторизации')
   }
 }
 

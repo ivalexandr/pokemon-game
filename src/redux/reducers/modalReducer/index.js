@@ -11,7 +11,7 @@ const modalSlice = createSlice({
     isRegister: false,
     isAuth: false,
     credential: null,
-    error:'',
+    error: '',
   },
 
   reducers: {
@@ -23,6 +23,9 @@ const modalSlice = createSlice({
     },
     toggleForm: state => {
       state.isLoginForm = !state.isLoginForm
+    },
+    clearError: state => {
+      state.error = ''
     }
   },
 
@@ -57,8 +60,12 @@ export const modalReducer = modalSlice.reducer
 export const {
   closeModal,
   openModal,
-  toggleForm
+  toggleForm,
+  clearError
 } = modalSlice.actions
 
 export const isOpen = store => store.modal.isOpen
 export const isLoginForm = store => store.modal.isLoginForm
+export const isAuth = store => store.modal.isAuth
+export const isRegister = store => store.modal.isRegister
+export const error = store => store.modal.error

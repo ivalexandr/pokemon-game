@@ -22,6 +22,7 @@ const LoginForm = () => {
 
   const submitHandler = event => {
     event.preventDefault()
+
     const registerData = {
       ...form,
       returnSecureToken: true,
@@ -29,6 +30,7 @@ const LoginForm = () => {
     isLoginFormType 
     ? dispatch(register(registerData))
     : dispatch(auth(registerData))
+    
     setForm({})
   }
 
