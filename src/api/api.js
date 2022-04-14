@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app'
 import { getDatabase, set, get, child, ref, push } from 'firebase/database'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCjYEDnImrYPVhHPIUY261m3l5ZgTi6qtc",
+  apiKey: process.env.REACT_APP_API_KEY,
   authDomain: "pokemon-game-793c9.firebaseapp.com",
   projectId: "pokemon-game-793c9",
   storageBucket: "pokemon-game-793c9.appspot.com",
@@ -43,12 +43,45 @@ const pushDataFromDatabase = async data => {
   }
 }
 
+const registerUser = async data => {
+  const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_API_KEY}`
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers:{
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    })
+    if (!res.ok) return Promise.reject('Ошибка при регистрации')
+    return await res.json()
+  } catch (error) {
+    return Promise.reject('Ошибка при регистрации')
+  }
+}
+
+const authUser = async data => {
+  const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_API_KEY}`
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers:{
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    })
+    if (!res.ok) return Promise.reject('Ошибка при авторизации')
+    return await res.json()
+  } catch (error) {
+    return Promise.reject('Ошибка при авторизации')
+  }
+}
+
 //-------game api-------
-const BASE_URL = 'https://reactmarathon-api.netlify.app';
 
 const getBoard = async () => {
   try {
-    const url = new URL('api/board', BASE_URL)
+    const url = new URL('api/board', process.env.REACT_APP_BASE_BACKEND_URL)
     const res = await fetch(url)
     if(!res.ok) throw new Error('Запрос не удался')
     return await res.json()
@@ -59,7 +92,7 @@ const getBoard = async () => {
 
 const getPlayerTwoCard = async () => {
   try {
-    const url = new URL('api/create-player', BASE_URL)
+    const url = new URL('api/create-player', process.env.REACT_APP_BASE_BACKEND_URL)
     const res = await fetch(url)
     if(!res.ok) throw new Error('Запрос не удался')
     return await res.json()
@@ -70,7 +103,7 @@ const getPlayerTwoCard = async () => {
 
 const setCardOnBoard = async data => {
   try {
-    const url = new URL('api/players-turn', BASE_URL)
+    const url = new URL('api/players-turn', process.env.REACT_APP_BASE_BACKEND_URL)
     const res = await fetch(url, {
       method:'POST',
       headers: {
@@ -89,6 +122,8 @@ export {
   getDataFromDatabase,
   updateDataFromDatabase,
   pushDataFromDatabase,
+  registerUser,
+  authUser,
   getBoard,
   getPlayerTwoCard,
   setCardOnBoard

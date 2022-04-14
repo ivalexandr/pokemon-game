@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { PrivateRoute } from "../PrivateRoute"
 import { LayoutPage } from "../LayoutPage"
 import { HomePage } from "../../routes/HomePage"
 import { AboutPage } from "../../routes/AboutPage"
@@ -7,18 +8,20 @@ import { Start } from "../../routes/Game/Start"
 import { BoardPage } from "../../routes/Game/Board"
 import { FinishPage } from "../../routes/Game/Finish"
 import { Page404 } from "../../routes/404"
+import { NotificationContainer } from 'react-notifications'
 
 const App = () => {
   
   return (
+    <>
     <Router>
       <Routes>
         <Route path="/" element={<LayoutPage />}>
           <Route path="/" element={<HomePage />}/>
           <Route path="game">
-              <Route path="/game" element={<Start />} />
-              <Route path="/game/board" element={<BoardPage />} />
-              <Route path="/game/finish" element={<FinishPage />} />
+              <Route path="/game" element={<><PrivateRoute /><Start /></>} />
+              <Route path="/game/board" element={<><PrivateRoute /><BoardPage /></>} />
+              <Route path="/game/finish" element={<><PrivateRoute /><FinishPage /></>} />
           </Route>
           <Route path="about" element={<AboutPage />} />
           <Route path="contact" element={<ContactPage />} />
@@ -26,6 +29,8 @@ const App = () => {
         <Route path="*" element={<Page404 />} />
       </Routes>
     </Router>
+    <NotificationContainer />
+    </>
   )
 }
 

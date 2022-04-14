@@ -1,9 +1,15 @@
+import { useSelector } from 'react-redux'
+import { isLoginForm } from '../../redux/reducers/modalReducer'
 import { Header } from '../../components/Header'
 import { Layout } from '../../components/Layout'
 import { Footer } from '../../components/Footer'
+import { Modal } from '../../components/Modal'
+import { LoginForm } from '../../components/LoginForm'
 import bg from '../../assets/img/bg.jpg'
 
 const HomePage = () => {
+
+  const isLoginFormType = useSelector(isLoginForm)
 
   return (
     <>
@@ -22,6 +28,7 @@ const HomePage = () => {
         </p>
       </Layout>
       <Footer />
+      <Modal title={!isLoginFormType ? 'SIGN IN': 'SIGN UP'} children={<LoginForm />}/>
     </>
   )
 }
