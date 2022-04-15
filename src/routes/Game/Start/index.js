@@ -5,14 +5,20 @@ import { PokemonCard } from '../../../components/PokemonCard'
 import { useDispatch, useSelector } from 'react-redux'
 import { getPokemons } from '../../../redux/reducers/gameReducer/async/getPokemons'
 import { pokemons, setCard, choiseCard, player1Pokemons } from '../../../redux/reducers/gameReducer'
+import { isRefresh } from '../../../redux/reducers/modalReducer'
 import s from './style.module.css'
 
 const Start = () => {
   const dispatch = useDispatch()
   const pokemonsCard = useSelector(pokemons) 
   const player1 = useSelector(player1Pokemons)
-  
+  const isRefreshUser = useSelector(isRefresh)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    dispatch(getPokemons())
+  //eslint-disable-next-line
+  }, [isRefreshUser])
 
   useEffect(() => {
     dispatch(getPokemons())

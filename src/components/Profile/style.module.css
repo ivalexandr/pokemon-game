@@ -1,0 +1,31 @@
+.root {
+  position: absolute;
+  right: 0;
+  top: 35px;
+  width: 350px;
+  background-color: #fff;
+  border-radius: 10px;
+  border-top-right-radius: 0;
+  padding: 10px;
+  text-align: center;
+  cursor: default;
+}
+.email {
+  display: inline-block;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+.root button {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
+.root:before {
+  content: '';
+  display: block;
+  position: absolute;
+  border: 10px solid transparent;
+  border-bottom: 10px solid #fff;
+  right: 0;
+  top: -20px;
+}

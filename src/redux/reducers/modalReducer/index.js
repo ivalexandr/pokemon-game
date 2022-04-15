@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { register } from './async/registerUser'
 import { auth } from './async/authUser'
+import { refresh } from './async/refreshUser'
 
 const modalSlice = createSlice({
   name:'modal',
@@ -10,7 +11,8 @@ const modalSlice = createSlice({
     isLoginForm: false,
     isRegister: false,
     isAuth: false,
-    credential: null,
+    isRefresh: false,
+    credential: {},
     error: '',
   },
 
@@ -52,6 +54,17 @@ const modalSlice = createSlice({
       state.isAuth = false
       state.error = payload
     })
+    builder.addCase(refresh.pending, state => {
+      state.isRefresh = true
+    })
+    builder.addCase(refresh.fulfilled, (state, { payload }) => {
+      state.isRefresh = false
+      state.credential = payload
+    })
+    builder.addCase(refresh.rejected, (state, { payload }) => {
+      state.isRefresh = false
+      state.error = payload
+    })
   }
 
 })
@@ -69,3 +82,4 @@ export const isLoginForm = store => store.modal.isLoginForm
 export const isAuth = store => store.modal.isAuth
 export const isRegister = store => store.modal.isRegister
 export const error = store => store.modal.error
+export const isRefresh = store => store.modal.isRefresh
