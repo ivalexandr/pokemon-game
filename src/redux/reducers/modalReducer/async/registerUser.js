@@ -9,7 +9,12 @@ export const register = createAsyncThunk(
       const res = await registerUser(data)
       NotificationManager.success('All OK', 'Success')
       localStorage.setItem('idToken', res.idToken)
-      return res
+      localStorage.setItem('refreshToken', res.refreshToken)
+      return {
+        uid: res.localId,
+        refreshToken: res.refreshToken,
+        idToken: res.idToken
+      }
     } catch (error) {
       NotificationManager.error(error, 'Error')
       return rejectWithValue(error)

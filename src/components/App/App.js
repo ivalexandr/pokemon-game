@@ -1,3 +1,6 @@
+import { useEffect } from "react"
+import { useDispatch } from "react-redux"
+import { refresh } from "../../redux/reducers/modalReducer/async/refreshUser"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { PrivateRoute } from "../PrivateRoute"
 import { LayoutPage } from "../LayoutPage"
@@ -11,7 +14,13 @@ import { Page404 } from "../../routes/404"
 import { NotificationContainer } from 'react-notifications'
 
 const App = () => {
-  
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    localStorage.getItem('refreshToken') && dispatch(refresh())
+  //eslint-disable-next-line
+  }, [])
+
   return (
     <>
     <Router>

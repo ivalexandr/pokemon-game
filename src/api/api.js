@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { getDatabase, set, get, child, ref, push } from 'firebase/database'
+import { getDatabase, set, child, ref, push } from 'firebase/database'
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -15,13 +15,14 @@ const database = getDatabase(app)
 
 //---------firebase api---------
 
-const getDataFromDatabase = async () => {
+const getDataFromDatabase = async (uid, idToken) => {
   try {
-    const refDb = ref(database)
-    const res = await get(child(refDb, 'pokemons/'))
-    return await res.val()
+    const url = `https://pokemon-game-793c9-default-rtdb.firebaseio.com/${uid}/pokemons.json?auth=${idToken}`
+    const res = await fetch(url)
+    if (!res.ok) return Promise.reject('Загрузка покемонов не удалась')
+    return await res.json()
   } catch (error) {
-    console.error(error)
+    return Promise.reject(error)
   }
 }
 
@@ -54,9 +55,22 @@ const registerUser = async data => {
       body: JSON.stringify(data)
     })
     if (!res.ok) return Promise.reject('Ошибка при регистрации')
-    return await res.json()
+
+    const userData = await res.json()
+    const resPokemons = await getStartPackPokemons()
+
+    resPokemons.data.forEach(async item => {
+      await fetch(`https://pokemon-game-793c9-default-rtdb.firebaseio.com/${userData.localId}/pokemons.json?auth=${userData.idToken}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(item)
+    })
+    })
+    return userData
   } catch (error) {
-    return Promise.reject('Ошибка при регистрации')
+    return Promise.reject(error)
   }
 }
 
@@ -73,7 +87,27 @@ const authUser = async data => {
     if (!res.ok) return Promise.reject('Ошибка при авторизации')
     return await res.json()
   } catch (error) {
-    return Promise.reject('Ошибка при авторизации')
+    return Promise.reject(error)
+  }
+}
+
+const refreshUser = async () => {
+  const url = `https://securetoken.googleapis.com/v1/token?key=${process.env.REACT_APP_API_KEY}`
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        grant_type: 'refresh_token',
+        refreshToken: localStorage.getItem('refreshToken')
+      })
+    })
+    if (!res.ok) return Promise.reject('Ошибка обновления пользователя')
+    return await res.json()
+  } catch (error) {
+    return Promise.reject(error)
   }
 }
 
@@ -118,13 +152,26 @@ const setCardOnBoard = async data => {
   }
 }
 
+const getStartPackPokemons = async () => {
+  const url = 'https://reactmarathon-api.herokuapp.com/api/pokemons/starter'
+  try {
+    const res = await fetch(url)
+    if (!res.ok) return Promise.reject('Ошибка запроса покемонов') 
+    return await res.json()
+
+  } catch (error) {
+    return Promise.reject(error) 
+  }
+}
+
 export { 
   getDataFromDatabase,
   updateDataFromDatabase,
   pushDataFromDatabase,
   registerUser,
   authUser,
+  refreshUser,
   getBoard,
   getPlayerTwoCard,
-  setCardOnBoard
+  setCardOnBoard,
 }

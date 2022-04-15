@@ -9,7 +9,13 @@ export const auth = createAsyncThunk(
       const res = await authUser(data)
       NotificationManager.success('All OK', 'Success')
       localStorage.setItem('idToken', res.idToken)
-      return res
+      localStorage.setItem('refreshToken', res.refreshToken)
+      console.log(res)
+      return {
+        uid: res.localId,
+        refreshToken: res.refreshToken,
+        idToken: res.idToken
+      }
     } catch (error) {
       NotificationManager.error(error, 'Error')
       return rejectWithValue(error)

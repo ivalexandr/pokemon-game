@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { isOpen, isLoginForm, toggleForm } from '../../redux/reducers/modalReducer'
+import { isOpen, isLoginForm, toggleForm, closeModal } from '../../redux/reducers/modalReducer'
 import { auth } from '../../redux/reducers/modalReducer/async/authUser'
 import { register } from '../../redux/reducers/modalReducer/async/registerUser'
 import { Input } from '../Input'
@@ -27,10 +27,12 @@ const LoginForm = () => {
       ...form,
       returnSecureToken: true,
     }
+
     isLoginFormType 
     ? dispatch(register(registerData))
     : dispatch(auth(registerData))
-    
+
+    dispatch(closeModal())
     setForm({})
   }
 
