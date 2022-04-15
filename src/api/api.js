@@ -1,18 +1,3 @@
-import { initializeApp } from 'firebase/app'
-import { getDatabase, set, child, ref, push } from 'firebase/database'
-
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: "pokemon-game-793c9.firebaseapp.com",
-  projectId: "pokemon-game-793c9",
-  storageBucket: "pokemon-game-793c9.appspot.com",
-  messagingSenderId: "498121446672",
-  appId: "1:498121446672:web:6efe413884709e31a10195"
-}
-
-const app = initializeApp(firebaseConfig)
-const database = getDatabase(app)
-
 //---------firebase api---------
 
 const getDataFromDatabase = async (uid, idToken) => {
@@ -26,21 +11,18 @@ const getDataFromDatabase = async (uid, idToken) => {
   }
 }
 
-const updateDataFromDatabase = async (data, key) => {
+const pushDataFromDatabase = async (item, localId, idToken) => {
   try {
-    await set(ref(database, 'pokemons/' + key), data)
+    const res = await fetch(`https://pokemon-game-793c9-default-rtdb.firebaseio.com/${localId}/pokemons.json?auth=${idToken}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(item)
+  })
+  if (!res.ok) return Promise.reject('Добавление карточки не удалось')
   } catch (error) {
-    console.error(error)
-  }
-}
-
-const pushDataFromDatabase = async data => {
-  const refDb = ref(database)
-  try {
-    const newKey = push(child(refDb, 'pokemons/')).key
-    await updateDataFromDatabase(data, newKey)
-  } catch (error) {
-    console.error(error)
+    return Promise.reject(error)
   }
 }
 
@@ -111,6 +93,23 @@ const refreshUser = async () => {
   }
 }
 
+const getUser = async () => {
+  const url = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${process.env.REACT_APP_API_KEY}`
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({idToken: localStorage.getItem('idToken')})
+    })
+    if (!res.ok) return Promise.reject('Получение пользователя не удалось')
+    return await res.json()
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
 //-------game api-------
 
 const getBoard = async () => {
@@ -166,11 +165,11 @@ const getStartPackPokemons = async () => {
 
 export { 
   getDataFromDatabase,
-  updateDataFromDatabase,
   pushDataFromDatabase,
   registerUser,
   authUser,
   refreshUser,
+  getUser,
   getBoard,
   getPlayerTwoCard,
   setCardOnBoard,

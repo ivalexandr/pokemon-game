@@ -6,8 +6,8 @@ export const refresh = createAsyncThunk(
   async (_, { rejectWithValue, getState }) => {
     try {
       const res = await refreshUser()
-    
       localStorage.setItem('refreshToken', res.refresh_token)
+      localStorage.setItem('idToken', res.id_token)
       return {
         uid: res.user_id,
         refreshToken: res.refresh_token,

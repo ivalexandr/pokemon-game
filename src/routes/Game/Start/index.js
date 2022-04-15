@@ -20,6 +20,11 @@ const Start = () => {
   //eslint-disable-next-line
   }, [isRefreshUser])
 
+  useEffect(() => {
+    dispatch(getPokemons())
+  //eslint-disable-next-line
+  }, [])
+
   const clickHandler = id => {
     dispatch(setCard(id))
     dispatch(choiseCard())
