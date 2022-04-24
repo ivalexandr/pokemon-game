@@ -5,28 +5,32 @@ import { getGameBoard } from "./async/getBoard"
 import { setCardOnGameBoard } from "./async/setCardOnGameBoard"
 import { pushCard } from "./async/pushCard"
 
+const initialState = {
+  pokemons: [],
+  player1Pokemons:[],
+  player2Pokemons:[],
+  player1PokemonsGame: [],
+  player2PokemonsGame: [],
+  board: [],
+  serverBoard:[0,0,0,0,0,0,0,0,0],
+  game:null,
+  choiseCard: null,
+  playerStart: null,
+  selectedCard: null,
+  countPlayer1: 0,
+  countPlayer2: 0,
+  isLoadingAllCards: false,
+  isLoadingPlayer2: false,
+  isLoadingBoard: false,
+  isLoadingPushCard: false,
+  win:'',
+  error:'',
+  steps: 0,
+}
+
 const gameSlice = createSlice({
   name:'game',
-  initialState: {
-    pokemons: [],
-    player1Pokemons:[],
-    player2Pokemons:[],
-    player1PokemonsGame: [],
-    player2PokemonsGame: [],
-    board: [],
-    choiseCard: null,
-    playerStart: null,
-    selectedCard: null,
-    countPlayer1: 0,
-    countPlayer2: 0,
-    isLoadingAllCards: false,
-    isLoadingPlayer2: false,
-    isLoadingBoard: false,
-    isLoadingPushCard: false,
-    win:'',
-    error:'',
-    steps: 0,
-  },
+  initialState,
   reducers:{
     setCard: (state, { payload }) => {
       const pokemon = Object.entries(state.pokemons).find(item => item[1].id === payload)
@@ -78,33 +82,49 @@ const gameSlice = createSlice({
       state.selectedCard = payload
     },
 
-    counterWin: (state) => {
+    counterWin: state => {
       state.countPlayer1 = state.player1Pokemons.length
       state.countPlayer2 = state.player2Pokemons.length
       current(state.board).forEach(item => {
-        if (item.card.possession === 'red') {
+        if (item.card?.possession === 'red') {
           state.countPlayer2++
         }
-        if (item.card.possession === 'blue') {
+        if (item.card?.possession === 'blue') {
           state.countPlayer1++
         }
       })
     },
 
     cleanState: state => {
-      state.pokemons = []
-      state.player1Pokemons = []
-      state.player2Pokemons = []
-      state.player1PokemonsGame = []
-      state.player2PokemonsGame = []
-      state.win = ''
-      state.steps = 0
-      state.choiseCard = null
-      state.playerStart = null
-      state.selectedCard = null
-    }
+      for (const value in state) {
+        state[value] = initialState[value]
+      }
+    },
 
+    setSteps: state => {
+      state.steps = state.steps + 1
+    },
+
+    setBord: (state, { payload }) => {
+      state.board = state.board.map(item => {
+        if (item.position === payload) {
+          return {
+            card: { ...state.selectedCard },
+            position: payload
+          }
+        }
+        return item
+      })
+    },
+    setGameBoard: (state, { payload }) => {
+      state.board = payload
+    },
+
+    setServerBoard:(state, { payload }) => {
+      state.serverBoard = payload
+    },
   },
+
   extraReducers: builder => {
     builder.addCase(getPokemons.pending, state => {
       state.isLoadingAllCards = true
@@ -156,8 +176,7 @@ const gameSlice = createSlice({
 
     builder.addCase(setCardOnGameBoard.fulfilled, (state, action) => {
       state.isLoadingBoard = false
-      state.board = action.payload.data
-      state.steps = state.steps + 1
+      state.game = action.payload
     })
 
     builder.addCase(setCardOnGameBoard, (state, action) => {
@@ -191,7 +210,11 @@ export const {
   setWinCard,
   setPlayerStart,
   selectCard,
-  counterWin
+  counterWin,
+  setBord,
+  setServerBoard,
+  setGameBoard,
+  setSteps
 } = gameSlice.actions
 
 export const pokemons = store => store.game.pokemons
@@ -207,3 +230,5 @@ export const counterPlayer1 = store => store.game.countPlayer1
 export const counterPlayer2 = store => store.game.countPlayer2
 export const player1PokemonsGame = store => store.game.player1PokemonsGame
 export const player2PokemonsGame = store => store.game.player2PokemonsGame
+export const selectServerBoard = store => store.game.serverBoard
+export const selectGame = store => store.game.game

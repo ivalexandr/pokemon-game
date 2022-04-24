@@ -1,10 +1,9 @@
-import { useState } from "react"
 import { PokemonCard } from "../../../../../components/PokemonCard"
 import cn from 'classnames'
 import s from './style.module.css'
 
-const BoardCard = ({player, cards, onCLickCard, choisePlayer }) => {
-  const [ isSelected, setSelected ] = useState(null)
+const BoardCard = ({player, cards, onCLickCard, choisePlayer, isSelected, setSelected }) => {
+
   return (
     <>
       {
@@ -13,7 +12,7 @@ const BoardCard = ({player, cards, onCLickCard, choisePlayer }) => {
             <div className={cn(s.cardBoard, {[s.selected]: isSelected === item.id})}
               key={item.id}
               onClick = {() => {
-                if (choisePlayer !== player) return
+                if (choisePlayer === 2) return
                 setSelected(item.id)
                 onCLickCard && onCLickCard({...item, player})
               }}

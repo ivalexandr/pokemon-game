@@ -12,6 +12,8 @@ const Profile = ({ onClickHandler }) => {
 
   useEffect(() => {
     dispatch(getActiveUser())
+    document.addEventListener('pointerdown', clickHandler)
+    return () => document.removeEventListener('pointerdown', clickHandler)
   //eslint-disable-next-line
   }, [])
 
@@ -22,7 +24,7 @@ const Profile = ({ onClickHandler }) => {
   }
 
   return (
-    <div className={s.root} ref={rootRef} onClick = {clickHandler}>
+    <div className={s.root} ref={rootRef} >
       <span className={s.email}> User: {user?.email} </span>
       <button onClick = {onClickHandler}>Logout</button>
     </div>
