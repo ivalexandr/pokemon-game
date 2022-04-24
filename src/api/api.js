@@ -113,46 +113,46 @@ const getUser = async () => {
 //-------game api-------
 
 const getBoard = async () => {
+  const url = new URL('api/pokemons/board', process.env.REACT_APP_BASE_BACKEND_URL)
   try {
-    const url = new URL('api/board', process.env.REACT_APP_BASE_BACKEND_URL)
     const res = await fetch(url)
-    if(!res.ok) throw new Error('Запрос не удался')
+    if(!res.ok) return Promise.reject('Запрос не удался')
     return await res.json()
   } catch (error) {
-    console.error(error)
+    return Promise.reject(error)
   }
 }
 
-const getPlayerTwoCard = async () => {
+const getPlayerTwoCard = async data => {
+  const url = new URL('api/pokemons/game/start', process.env.REACT_APP_BASE_BACKEND_URL)
   try {
-    const url = new URL('api/create-player', process.env.REACT_APP_BASE_BACKEND_URL)
-    const res = await fetch(url)
-    if(!res.ok) throw new Error('Запрос не удался')
+    const res = await fetch(url, {
+      method:'POST',
+      body: JSON.stringify({pokemons: [...data]})
+    })
+    if(!res.ok) return Promise.reject('Запрос не удался')
     return await res.json()
   } catch (error) {
-    console.error(error)
+    return Promise.reject(error)
   }
 }
 
 const setCardOnBoard = async data => {
+  const url = new URL('api/pokemons/game', process.env.REACT_APP_BASE_BACKEND_URL)
   try {
-    const url = new URL('api/players-turn', process.env.REACT_APP_BASE_BACKEND_URL)
     const res = await fetch(url, {
       method:'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
       body: JSON.stringify(data)
     })
-    if(!res.ok) throw new Error('Запрос не удался')
+    if(!res.ok) return Promise.reject('Запрос не удался')
     return await res.json()
   } catch (error) {
-    console.error(error)
+    return Promise.reject(error)
   }
 }
 
 const getStartPackPokemons = async () => {
-  const url = 'https://reactmarathon-api.herokuapp.com/api/pokemons/starter'
+  const url = new URL('api/pokemons/starter', process.env.REACT_APP_BASE_BACKEND_URL)
   try {
     const res = await fetch(url)
     if (!res.ok) return Promise.reject('Ошибка запроса покемонов') 

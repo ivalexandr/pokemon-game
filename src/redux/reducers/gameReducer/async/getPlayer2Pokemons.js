@@ -3,5 +3,11 @@ import { getPlayerTwoCard } from '../../../../api/api'
 
 export const getPlayer2 = createAsyncThunk(
   'game/getPlayer2',
-  async () => await getPlayerTwoCard()
+  async (data, { rejectWithValue }) => {
+    try {
+      return await getPlayerTwoCard(data)
+    } catch (error) {
+      return rejectWithValue(error)
+    }
+  }
 )

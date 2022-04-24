@@ -3,5 +3,11 @@ import { setCardOnBoard } from '../../../../api/api'
 
 export const setCardOnGameBoard = createAsyncThunk(
   'game/setCardOnGameBoard',
-  async params => await setCardOnBoard(params)
+  async (params, { rejectWithValue }) => {
+    try {
+      return await setCardOnBoard(params)
+    } catch (error) {
+      return rejectWithValue(error)
+    }
+  }
 )

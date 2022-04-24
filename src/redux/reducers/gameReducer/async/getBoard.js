@@ -3,5 +3,11 @@ import { getBoard } from "../../../../api/api"
 
 export const getGameBoard = createAsyncThunk(
   'game/getGameBoard',
-  async () => await getBoard()
+  async (_, { rejectWithValue }) => {
+    try {
+      return await getBoard()
+    } catch (error) {
+      return rejectWithValue(error)
+    }
+  }
 )

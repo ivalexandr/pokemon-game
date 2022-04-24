@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
@@ -19,13 +19,49 @@ import {
   steps,
   counterWin,
   counterPlayer1,
-  counterPlayer2
+  counterPlayer2,
+  selectServerBoard,
+  setBord,
+  selectGame,
+  setServerBoard,
+  setGameBoard,
+  setSteps
   } from '../../../redux/reducers/gameReducer'
-  
 import { PokemonCard } from '../../../components/PokemonCard'
 import { BoardCard } from './components/BoardCard'
 import { ArrowChoice } from '../../../components/ArrowChoice'
 import s from './style.module.css'
+
+const returnBoard = board => {
+  if (!board) return 
+  return board.map((item, index) => {
+    let card = null
+    if (typeof item === 'object') {
+      card = {
+        ...item.poke,
+        possession: item.holder === 'p1' ? 'blue' : 'red'
+      }
+    }
+    return {
+      position: index + 1,
+      card,
+    }
+  })
+}
+
+const stepingPlayer = async (playerGameStart, p1, p2, move = null, board , dispatch) => {
+  const currentPlayer = playerGameStart === 1 ? 'p1' : 'p2'
+  const params = {
+    currentPlayer,
+    hands: {
+      p1,
+      p2
+    },
+    move,
+    board
+  }
+  await dispatch(setCardOnGameBoard(params))
+}
 
 const BoardPage = () => {
 
@@ -38,6 +74,9 @@ const BoardPage = () => {
   const gameSteps = useSelector(steps)
   const countPlayer1 = useSelector(counterPlayer1)
   const countPLayer2 = useSelector(counterPlayer2)
+  const serverBoard = useSelector(selectServerBoard)
+  const game = useSelector(selectGame)
+  const [ isSelected, setSelected ] = useState(null)
 
   const navigate = useNavigate()
 
@@ -51,7 +90,7 @@ const BoardPage = () => {
       dispatch(setPlayerStart(player))
     }, 2000)
 
-    dispatch(getPlayer2())
+    dispatch(getPlayer2(player1))
     dispatch(getGameBoard())
 
     return () => {
@@ -61,8 +100,8 @@ const BoardPage = () => {
   }, [])
 
   useEffect(() => {
+    dispatch(counterWin())
     if (gameSteps === 9) {
-      dispatch(counterWin())
       if (countPlayer1 > countPLayer2) {
         dispatch(setWin('WIN'))
       }else if (countPlayer1 < countPLayer2) {
@@ -75,24 +114,55 @@ const BoardPage = () => {
   //eslint-disable-next-line
   }, [gameSteps])
 
+  useEffect(() => {
+    if (playerGameStart === 2 && gameSteps === 0) {
+      console.log('sdfdsfds')
+      stepingPlayer(playerGameStart, player1, player2, null, serverBoard, dispatch)
+    }
+  //eslint-disable-next-line
+  }, [playerGameStart])
+
+  useEffect(() => {
+      if (!game && playerGameStart !== 2) return
+      const idAI = game?.move.poke.id
+      const selectPlayer2Card = player2.find(item => item.id === idAI)
+      
+      dispatch(setGameBoard(returnBoard(game?.oldBoard)))
+      const timerIdSelected = setTimeout(() => setSelected(idAI), 1000)
+      const timerIdSetPlayer = setTimeout(() => {
+        dispatch(setPlayerCard({ ...selectPlayer2Card, player: 2 }))
+        dispatch(setServerBoard(game?.board))
+        dispatch(setGameBoard(returnBoard(game?.board)))
+        dispatch(setPlayerStart(1))
+        dispatch(setSteps())
+      }, 1500)
+      return () => {
+        clearInterval(timerIdSelected)
+        clearInterval(timerIdSetPlayer)
+      }
+  //eslint-disable-next-line
+  }, [game])
+
   const clickBoardHandler = position => {
     const cardOnBoard = gameBoard.find(item => item.position === position)
     if (cardOnBoard.card) return
     if (selectedGameCard) {
-      const params = {
-        position,
-        card: selectedGameCard,
-        board: gameBoard
-      }
-      dispatch(setCardOnGameBoard(params))
+      stepingPlayer(
+        playerGameStart,
+        player1,
+        player2,
+        {
+          poke:selectedGameCard,
+          position
+        },
+        serverBoard,
+        dispatch
+        )
     }
+    dispatch(setBord(position))
     dispatch(setPlayerCard(selectedGameCard))
-
-    if (playerGameStart === 1) {
-      dispatch(setPlayerStart(2))
-    } else {
-      dispatch(setPlayerStart(1))
-    }
+    dispatch(setPlayerStart(2))
+    dispatch(setSteps())
   }
 
   const clickCardHandler = card => {
@@ -108,16 +178,18 @@ const BoardPage = () => {
       <div className={s.playerOne}>
         {
           <BoardCard
-            choisePlayer = {playerGameStart}
-            player = {1}
+            choisePlayer = { playerGameStart }
+            player = { 1 }
             cards={ player1 }
-            onCLickCard = {clickCardHandler}
+            onCLickCard = { clickCardHandler }
+            isSelected = { isSelected }
+            setSelected = { setSelected } 
           />
         }
       </div>
       <div className={s.board}>
         {
-          gameBoard.map((item, index) => {
+          gameBoard?.map((item, index) => {
             return <div key={index} className={s.boardPlate} onClick={() => clickBoardHandler(item.position)}> 
               {
                 item.card && <PokemonCard {...item.card} minimize isActive />
@@ -128,10 +200,11 @@ const BoardPage = () => {
       </div>
       <div className={s.playerTwo}>
         <BoardCard 
-          choisePlayer = {playerGameStart}
-          player = {2}
+          choisePlayer = { playerGameStart }
+          player = { 2 }
           cards={ player2 } 
-          onCLickCard = {clickCardHandler}
+          isSelected = { isSelected }
+          setSelected = { setSelected } 
         />
       </div>
     </div>
