@@ -123,6 +123,10 @@ const gameSlice = createSlice({
     setServerBoard:(state, { payload }) => {
       state.serverBoard = payload
     },
+
+    removeSelectedCard: state => {
+      state.selectedCard = null
+    },
   },
 
   extraReducers: builder => {
@@ -214,7 +218,8 @@ export const {
   setBord,
   setServerBoard,
   setGameBoard,
-  setSteps
+  setSteps,
+  removeSelectedCard
 } = gameSlice.actions
 
 export const pokemons = store => store.game.pokemons

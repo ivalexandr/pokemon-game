@@ -67,7 +67,7 @@ const FinishPage = () => {
         }
       </div>
       <div className={s.wrapperButton}>
-        <button onClick={clickHandler} disabled={choiseCard && resultGame !== 'WIN'} >End game</button>
+        <button onClick={clickHandler} disabled={!choiseCard && resultGame === 'WIN'} >End game</button>
       </div>
       <div className={s.player}>
       {
