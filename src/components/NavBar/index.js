@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { openModal } from '../../redux/reducers/modalReducer'
 import { logoutUser, selectIsProfileOpen, selectUser, toggleProfile } from '../../redux/reducers/userReducer'
 import { LoginSVG } from '../LoginSVG'
 import { ProfileSVG } from '../ProfileSVG'
 import { Profile } from '../Profile'
+import logo from '../../assets/img/logo.png'
 import cn from 'classnames'
 import s from './style.module.css'
-
-
 
 const NavBar = ({isActive, onClickHandler, bgActive = true}) => {
   const dispatch = useDispatch()
@@ -27,9 +27,9 @@ const NavBar = ({isActive, onClickHandler, bgActive = true}) => {
   return (
     <nav className={cn(s.root, {[s.bgActive]: bgActive})}>
       <div className={s.navWrapper}>
-        <p className={s.brand}>
-          LOGO
-        </p>
+        <Link to={'/'} className={s.brand}>
+          <img src={ logo } alt="logo" />
+        </Link>
         <div className={s.menuGroup}>
           <div className={s.loginSvg} onClick = {openModalHandler}>
             { user ? <ProfileSVG /> : <LoginSVG /> }
