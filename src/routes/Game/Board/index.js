@@ -25,7 +25,8 @@ import {
   selectGame,
   setServerBoard,
   setGameBoard,
-  setSteps
+  setSteps,
+  removeSelectedCard
   } from '../../../redux/reducers/gameReducer'
 import { PokemonCard } from '../../../components/PokemonCard'
 import { BoardCard } from './components/BoardCard'
@@ -144,6 +145,7 @@ const BoardPage = () => {
   }, [game])
 
   const clickBoardHandler = position => {
+    if (!selectedGameCard) return
     const cardOnBoard = gameBoard.find(item => item.position === position)
     if (cardOnBoard.card) return
     if (selectedGameCard) {
@@ -162,6 +164,7 @@ const BoardPage = () => {
     dispatch(setBord(position))
     dispatch(setPlayerCard(selectedGameCard))
     dispatch(setPlayerStart(2))
+    // dispatch(removeSelectedCard())
     dispatch(setSteps())
   }
 

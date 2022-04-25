@@ -36,6 +36,9 @@ const Start = () => {
   
   return (
     <Layout title="Pokemon's game">
+        <div className={s.counter}>
+          Выбрано карт: <output>{ player1.length }</output>
+        </div>
         <div className={s.flex}>
           {
             Object.entries(pokemonsCard).map(item => {
