@@ -164,7 +164,7 @@ const BoardPage = () => {
     dispatch(setBord(position))
     dispatch(setPlayerCard(selectedGameCard))
     dispatch(setPlayerStart(2))
-    // dispatch(removeSelectedCard())
+    dispatch(removeSelectedCard())
     dispatch(setSteps())
   }
 
