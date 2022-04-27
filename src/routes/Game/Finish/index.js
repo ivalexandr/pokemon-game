@@ -45,9 +45,20 @@ const FinishPage = () => {
     if (resultGame !== 'WIN') return
     dispatch(setWinCard(id))
   }
+  
+  const endText = {
+    WIN: 'Победа! Поздравляем!',
+    LOSE: 'К сожалению, вы проиграли :(',
+    DRAW: 'Ничья!'
+  }
 
   return (
-    <Layout title={resultGame}>
+    <Layout title={endText[resultGame]}>
+      { 
+      resultGame === 'WIN' 
+      ? <div className={s.rule}>Не забудьте выбрать карту противника в свою колоду</div>
+      : null
+      }
       <div className={s.player}>
         {
           player1.map(item => {
@@ -67,7 +78,7 @@ const FinishPage = () => {
         }
       </div>
       <div className={s.wrapperButton}>
-        <button onClick={clickHandler} disabled={!choiseCard && resultGame === 'WIN'} >End game</button>
+        <button onClick={clickHandler} disabled={!choiseCard && resultGame === 'WIN'} >Завершить партию</button>
       </div>
       <div className={s.player}>
       {

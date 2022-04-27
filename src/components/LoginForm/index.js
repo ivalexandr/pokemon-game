@@ -51,7 +51,7 @@ const LoginForm = () => {
     <form onSubmit={submitHandler}> 
       <Input 
         type={'text'}
-        label={'Email'}
+        label={'E-mail'}
         name={'email'}
         isRequired={true}
         onChangeHandler={changeHandler}
@@ -59,7 +59,7 @@ const LoginForm = () => {
       />
       <Input 
         type={'password'}
-        label={'Password'}
+        label={'Пароль'}
         name={'password'}
         isRequired={true}
         onChangeHandler={changeHandler}
@@ -67,8 +67,8 @@ const LoginForm = () => {
         autoComplete="currentPassword"
       />
       <div className={s.flex}>
-        <button>Send</button> 
-        <a href="/" onClick={clickToggleHandler}>{isLoginFormType ? 'Register' : 'Login'}</a>
+        <button>{ isLoginFormType ? 'Регистрация' : 'Войти' }</button> 
+        <a href="/" onClick={clickToggleHandler}>{ isLoginFormType ? 'Авторизация' : 'Регистрация' }</a>
       </div>
     </form>
   )

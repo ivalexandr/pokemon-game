@@ -2,12 +2,12 @@ import { Layout } from '../../components/Layout'
 
 const AboutPage = () => {
   return (
-    <Layout title='About game' descr='This is about page'>
-        <p>
-          In the game two players face off against one another, one side playing
-          as "blue", the other as "red" on a 3x3 grid. Each player has five
-          cards in a hand and the aim is to capture the opponent's cards by
-          turning them into the player's own color of red or blue.
+    <Layout title='Об игре'>
+        <p style={{ textAlign: 'center' }}>
+          В игре участвуют два игрока, одна сторона играет за "синий", 
+          вторая сторона играет за "красный" цвета. Для игры используется доска размером 3x3.
+          У каждого игрока есть по пять карт в руке.
+          Цель игры состоит в том, чтобы захватить карты противника.
         </p>
     </Layout>
   )

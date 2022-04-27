@@ -35,7 +35,8 @@ const Start = () => {
   }
   
   return (
-    <Layout title="Pokemon's game">
+    <Layout title="Pokemon game">
+        <div className={s.rule}>Выбрать можно только 5 карт!</div>
         <div className={s.counter}>
           Выбрано карт: <output>{ player1.length }</output>
         </div>
@@ -63,7 +64,7 @@ const Start = () => {
           <button 
             disabled={player1.length < 5 || player1.length > 5} 
             onClick={clickStartHandler}>
-              Start game
+              Начать
             </button>
         </div>
     </Layout>

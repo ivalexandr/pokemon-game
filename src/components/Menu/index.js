@@ -9,19 +9,19 @@ const Menu = ({ isActive, onClickHandler }) => {
 
   const MENU = [
     {
-      title:'HOME',
+      title:'Домой',
       to: '/'
     },
     {
-      title:'GAME',
+      title:'Играть',
       to: '/game'
     },
     {
-      title:'ABOUT',
+      title:'Об игре',
       to: '/about'
     },
     {
-      title:'CONTACT',
+      title:'Контакты',
       to: '/contact'
     },
   ]
