@@ -1,0 +1,20 @@
+.wrapper {
+  min-height: 100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction: column;
+}
+
+.error {
+  font-size: 35px;
+  margin-bottom: 10px;
+}
+
+.title {
+  font-size: 20px;
+}
+
+.smile {
+  font-size: 40px;
+}
